@@ -1,7 +1,10 @@
+package pwt5.mainP;
+
+import java.io.*;
 import java.util.*;
 
-class PwTest {
-    public static Scanner s = new Scanner("System.in");
+public class PwTest {
+    public static Scanner s = new Scanner(System.in);
     public static void main(String[] args) {
         
         String key;                                         // key for generating passwords
@@ -10,16 +13,33 @@ class PwTest {
         Iterator<String> pwListIterator;                    // list iterator for pwList
         int count;                                          // count for creating passwords
         
-        System.out.print("Insert Key (-help to help): ");
-        key = s.next();
-        kStk = new StringTokenizer(key);
+		do {
+	        System.out.print("Insert Key (-help to help): ");
+	        key = s.nextLine();
+	        if(key.equalsIgnoreCase("-help")) {
+		        try {
+					BufferedReader br = new BufferedReader(new FileReader(new File("help.txt")));
+					String buf;
+			        while((buf = br.readLine()) != null) {
+			        	System.out.print(buf);
+			        }
+		        	br.close();
+				} catch (FileNotFoundException e) {
+					System.out.println("Couldn't find file.");
+				} catch (IOException e) {
+					System.out.println("Failed to read file.");
+				}
+	        }
+        } while(key.equalsIgnoreCase("-help"));
+        
         
         System.out.print("Insert count: ");
-        count = s.nextInt();
+        count = Integer.parseInt(s.nextLine());
         
         for(int i = 0; i < count; i++) {
-            
-            StringBuilder temp = new StringBuilder(null);
+        	
+        	kStk = new StringTokenizer(key);				// tokenize key every sequence
+            StringBuffer temp = new StringBuffer("");
             
             while(kStk.hasMoreTokens()) {
                 
@@ -31,7 +51,7 @@ class PwTest {
                     temp.append((char) (Math.random() * 26 + 'A'));
                     break;
                 case "0":
-                    temp.append((char) (Math.random() * 10 + 1));
+                    temp.append((char) (Math.random() * 10 + '0'));
                     break;
                 }
             }
